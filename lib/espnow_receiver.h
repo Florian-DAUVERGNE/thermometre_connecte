@@ -3,10 +3,7 @@
 
 #include <WiFi.h>
 #include <esp_now.h>
-
-typedef struct message {
-    int temperature;
-} message;
+#include "message.h"  // ← ajoute ça en haut
 
 class EspNowReceiver {
 private:
