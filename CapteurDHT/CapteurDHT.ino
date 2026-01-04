@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "CapteurDHT.h"  // Inclusion de la classe
+#include "../lib/CapteurDHT.h"  // Inclusion de la classe
 
 #define BROCHE_DHT 5
 #define TYPE_DHT DHT22

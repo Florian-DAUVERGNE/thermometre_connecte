@@ -1,4 +1,4 @@
-#include "afficheur7segments.h"
+#include "../lib/afficheur7segments.h"
 
 #define CLK 9
 #define DIO 10

@@ -1,4 +1,4 @@
-#include "espnow_receiver.h"
+#include "../lib/espnow_receiver.h"
 
 EspNowReceiver receiver;
 
