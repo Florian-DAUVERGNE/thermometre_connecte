@@ -62,6 +62,12 @@ class TempDisplay {
   {
     display.clear();
   }
+
+  void setBrightness(uint8_t brightness)
+  {
+    display.setBrightness(brightness);
+  }
+
   void showError()
   {
     uint8_t data[4] = {
