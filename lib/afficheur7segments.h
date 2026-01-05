@@ -13,8 +13,10 @@ class TempDisplay {
     TempDisplay(uint8_t clk, uint8_t dio) : display(clk, dio) {}
 
     // Initialisation de l'afficheur
-    void begin(uint8_t brightness = 0x0f) {
+  void begin(uint8_t brightness = 1)
+  {
       display.setBrightness(brightness);
+    display.clear();
     }
 
     // Affiche une température float sur 4 digits (23.5 -> 23.5°C)
