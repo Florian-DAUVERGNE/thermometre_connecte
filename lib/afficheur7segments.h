@@ -38,6 +38,26 @@ class TempDisplay {
 
       display.setSegments(data);
     }
+
+  void showHumidity(float temp)
+  {
+    int tempInt = int(temp * 10); // 23.5 -> 235
+
+    int digit1 = tempInt / 100;
+    int digit2 = (tempInt / 10) % 10;
+    int digit3 = tempInt % 10;
+    
+    uint8_t data[] = {
+        display.encodeDigit(digit1),
+        display.encodeDigit(digit2)| 0b10000000,
+        display.encodeDigit(digit3),
+        //.gfedcba
+        0b01110110              // % approximatif
+    };
+
+    display.setSegments(data);
+  }
+
   void clear()
   {
     display.clear();
