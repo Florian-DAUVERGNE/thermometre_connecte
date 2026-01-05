@@ -2,7 +2,8 @@
 #define MESSAGE_H
 
 typedef struct message {
-    int temperature;
+    float temperature;
+    float humidite;
 } message;
 
 #endif

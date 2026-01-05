@@ -3,7 +3,7 @@
 
 #include <WiFi.h>
 #include <esp_now.h>
-#include "message.h"  // ← ajoute ça en haut
+#include "message.h"
 
 class EspNowEmitter
 {
@@ -62,9 +62,10 @@ public:
         }
     }
 
-    void sendInt(int val)
+    void sendInt(float val, float humidite)
     {
         data.temperature = val;
+        data.humidite = humidite;
         esp_now_send(receiverMac, (uint8_t *)&data, sizeof(data));
     }
 };
