@@ -38,6 +38,10 @@ class TempDisplay {
 
       display.setSegments(data);
     }
+  void clear()
+  {
+    display.clear();
+  }
 };
 
 #endif
