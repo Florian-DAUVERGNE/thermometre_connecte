@@ -18,26 +18,18 @@ class TempDisplay {
     }
 
     // Affiche une température float sur 4 digits (23.5 -> 23.5°C)
-    void showTemperature(float temp) {
-      bool negative = false;
-      if (temp < 0) {
-        negative = true;
-        temp = -temp; // travailler avec valeur positive
-      }
+  void showTemperature(float temp)
+  {
 
       int tempInt = int(temp * 10); // 23.5 -> 235
+
       int digit1 = tempInt / 100;
       int digit2 = (tempInt / 10) % 10;
       int digit3 = tempInt % 10;
 
       uint8_t data[4];
 
-      if (negative) {
-        data[0] = 0b01000000; // trait pour le signe "-" (segment G)
-      } else {
         data[0] = display.encodeDigit(digit1);
-      }
-
       data[1] = display.encodeDigit(digit2) | 0b10000000; // point décimal
       data[2] = display.encodeDigit(digit3);
       data[3] = 0b01100011; // approximation °C
