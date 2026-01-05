@@ -62,6 +62,16 @@ class TempDisplay {
   {
     display.clear();
   }
+  void showError()
+  {
+    uint8_t data[4] = {
+        0b01100011, // E
+        0b01100011, // r
+        0b01100011, // r
+        0b01100011  // -
+    };
+    display.setSegments(data);
+  }
 };
 
 #endif
