@@ -4,40 +4,41 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-class TempDisplay {
-  private:
-    TM1637Display display;
+class TempDisplay
+{
+private:
+  TM1637Display display;
 
-  public:
-    // Constructeur : on passe les broches CLK et DIO
-    TempDisplay(uint8_t clk, uint8_t dio) : display(clk, dio) {}
+public:
+  // Constructeur : on passe les broches CLK et DIO
+  TempDisplay(uint8_t clk, uint8_t dio) : display(clk, dio) {}
 
-    // Initialisation de l'afficheur
+  // Initialisation de l'afficheur
   void begin(uint8_t brightness = 1)
   {
-      display.setBrightness(brightness);
+    display.setBrightness(brightness);
     display.clear();
-    }
+  }
 
-    // Affiche une température float sur 4 digits (23.5 -> 23.5°C)
+  // Affiche une température float sur 4 digits (23.5 -> 23.5°C)
   void showTemperature(float temp)
   {
 
-      int tempInt = int(temp * 10); // 23.5 -> 235
+    int tempInt = int(temp * 10); // 23.5 -> 235
 
-      int digit1 = tempInt / 100;
-      int digit2 = (tempInt / 10) % 10;
-      int digit3 = tempInt % 10;
+    int digit1 = tempInt / 100;
+    int digit2 = (tempInt / 10) % 10;
+    int digit3 = tempInt % 10;
 
-      uint8_t data[4];
+    uint8_t data[4];
 
-        data[0] = display.encodeDigit(digit1);
-      data[1] = display.encodeDigit(digit2) | 0b10000000; // point décimal
-      data[2] = display.encodeDigit(digit3);
-      data[3] = 0b01100011; // approximation °C
+    data[0] = display.encodeDigit(digit1);
+    data[1] = display.encodeDigit(digit2) | 0b10000000; // point décimal
+    data[2] = display.encodeDigit(digit3);
+    data[3] = 0b01100011; // approximation °C
 
-      display.setSegments(data);
-    }
+    display.setSegments(data);
+  }
 
   void showHumidity(float temp)
   {
@@ -46,13 +47,13 @@ class TempDisplay {
     int digit1 = tempInt / 100;
     int digit2 = (tempInt / 10) % 10;
     int digit3 = tempInt % 10;
-    
+
     uint8_t data[] = {
         display.encodeDigit(digit1),
-        display.encodeDigit(digit2)| 0b10000000,
+        display.encodeDigit(digit2) | 0b10000000,
         display.encodeDigit(digit3),
         //.gfedcba
-        0b01110110              // % approximatif
+        0b01110110 // % approximatif
     };
 
     display.setSegments(data);
