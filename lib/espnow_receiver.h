@@ -19,13 +19,6 @@ public:
             return;
 
         memcpy(&received, incomingData, sizeof(message));
-
-        Serial.print("Température : ");
-        Serial.print(received.temperature, 2);
-        Serial.print(" °C | Humidité : ");
-        Serial.print(received.humidite, 1);
-        Serial.println(" %");
-
         char macStr[18];
         snprintf(macStr, sizeof(macStr),
                  "%02X:%02X:%02X:%02X:%02X:%02X",
@@ -46,6 +39,11 @@ public:
             return;
         }
         esp_now_register_recv_cb(onReceive);
+    }
+
+    static message getReceived()
+    {
+        return received; // copie
     }
 };
 
