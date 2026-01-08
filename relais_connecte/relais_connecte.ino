@@ -11,7 +11,7 @@ message EspNowReceiver::received;
 
 EspNowReceiver receiver;
 
-bool relaisEtat = false;
+bool relaisEtat = true;
 
 void setup() {
   Serial.begin(115200);
