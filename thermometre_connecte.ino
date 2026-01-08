@@ -14,6 +14,10 @@ CapteurDHT monDHT(BROCHE_DHT, TYPE_DHT);
 TempDisplay tempDisp(CLK, DIO);
 EspNowEmitter emitter(receiverMac);
 
+const unsigned long DISPLAY_TIMEOUT = 60000; // 1 minute
+unsigned long lastInteraction = 0;
+bool affichageActif = true;
+
 struct Mesures {
   float humidite;
   float temperature;
@@ -25,6 +29,15 @@ const unsigned long UPDATE_INTERVAL = 500;
 
 bool lireCapteur(Mesures &m) {
   return monDHT.lire(m.humidite, m.temperature, m.ressenti);
+}
+
+void eteindreAffichage() {
+  tempDisp.clear();   // ou tempDisp.off(); selon ta lib
+  affichageActif = false;
+}
+
+void allumerAffichage() {
+  affichageActif = true;
 }
 
 void envoyerDonnees(const Mesures &m) {
@@ -49,6 +62,26 @@ void setup() {
 }
 
 void loop() {
+  // Gestion bouton
+  bool boutonAppuye = digitalRead(BUTTON_PIN) == LOW;
+
+  if (boutonAppuye) {
+    lastInteraction = millis();
+
+    if (!affichageActif) {
+      allumerAffichage();   // Réveil de l’affichage
+    }
+  }
+
+  // Coupure de l’affichage après 1 minute
+  if (affichageActif && millis() - lastInteraction > DISPLAY_TIMEOUT) {
+    eteindreAffichage();
+  }
+
+  // Si affichage éteint, on ne fait rien de plus
+  if (!affichageActif) return;
+
+  // Rafraîchissement normal
   if (millis() - lastUpdate < UPDATE_INTERVAL) return;
   lastUpdate = millis();
 
@@ -59,8 +92,7 @@ void loop() {
     return;
   }
 
-  bool boutonAppuye = digitalRead(BUTTON_PIN) == LOW;
-
   afficherMesures(mesures, boutonAppuye);
   envoyerDonnees(mesures);
 }
+
