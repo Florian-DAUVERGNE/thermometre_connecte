@@ -1,0 +1,5 @@
+*.zip
+schémas/#auto_saved_files#
+schémas/fp-info-cache
+schémas/~schémas.kicad_pcb.lck
+schémas/~schémas.kicad_sch.lck
