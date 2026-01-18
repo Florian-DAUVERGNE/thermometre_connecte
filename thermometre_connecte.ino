@@ -6,7 +6,7 @@
 #define DIO 3
 #define BROCHE_DHT 10
 #define TYPE_DHT DHT22
-#define BUTTON_PIN 5
+#define BUTTON_PIN 21
 
 uint8_t receiverMac[] = { 0x1C, 0xDB, 0xD4, 0x3C, 0x75, 0xC8 };
 
