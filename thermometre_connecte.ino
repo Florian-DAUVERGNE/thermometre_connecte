@@ -2,11 +2,11 @@
 #include "lib/CapteurDHT.h"
 #include "lib/espnow_emitter.h"
 
-#define CLK 0
-#define DIO 1
+#define CLK 4
+#define DIO 3
 #define BROCHE_DHT 10
 #define TYPE_DHT DHT22
-#define BUTTON_PIN 3
+#define BUTTON_PIN 5
 
 uint8_t receiverMac[] = { 0x1C, 0xDB, 0xD4, 0x3C, 0x75, 0xC8 };
 
