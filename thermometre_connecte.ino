@@ -32,11 +32,15 @@ bool premiereMesure = true;
 
 bool lireCapteur(Mesures &m) {
 
+    if(!CapteurTemperature.update()) {
+        return false;
+    }
+
   SHT41Data data = CapteurTemperature.lire();
 
-  m.temperature = data.temperature;
+  m.temperature = data.heatIndex;
   m.humidite = data.humidity;
-  m.ressenti = data.heatIndex;
+  m.ressenti = data.temperature;
 
   return true;
 }
