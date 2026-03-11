@@ -1,18 +1,16 @@
 #include "lib/afficheur7segments.h"
-#include "lib/CapteurDHT.h"
+#include "lib/CapteurSHT41.h"
 #include "lib/espnow_emitter.h"
 
 #define CLK 4
 #define DIO 3
-#define BROCHE_DHT 10
-#define TYPE_DHT DHT22
 #define BUTTON_PIN 21
   
 #define SEUIL_TEMP 1.0
 
 uint8_t receiverMac[] = { 0x1C, 0xDB, 0xD4, 0x3C, 0x75, 0xC8 };
 
-CapteurDHT monDHT(BROCHE_DHT, TYPE_DHT);
+CapteurSHT41 CapteurTemperature;
 TempDisplay tempDisp(CLK, DIO);
 EspNowEmitter emitter(receiverMac);
 
@@ -33,11 +31,18 @@ Mesures dernierEnvoi;
 bool premiereMesure = true;
 
 bool lireCapteur(Mesures &m) {
-  return monDHT.lire(m.humidite, m.temperature, m.ressenti);
+
+  SHT41Data data = CapteurTemperature.lire();
+
+  m.temperature = data.temperature;
+  m.humidite = data.humidity;
+  m.ressenti = data.heatIndex;
+
+  return true;
 }
 
 void eteindreAffichage() {
-  tempDisp.clear();   // ou tempDisp.off(); selon ta lib
+  tempDisp.clear();
   affichageActif = false;
 }
 
@@ -69,7 +74,7 @@ void setup() {
   delay(100);   // IMPORTANT
 
   emitter.begin();
-  monDHT.begin();
+  CapteurTemperature.begin();
   tempDisp.begin();
 }
 
