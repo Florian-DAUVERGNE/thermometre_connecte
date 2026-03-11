@@ -10,7 +10,7 @@ void setup() {
 }
 
 void loop() {
-    int temp = 23; // Exemple : récupère ta valeur réelle ici
-    emitter.sendInt(temp);
+    int temp = 23.5; // Exemple : récupère ta valeur réelle ici
+    emitter.sendInt(temp,0.4);
     delay(1000);
 }

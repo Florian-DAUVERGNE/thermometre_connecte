@@ -1,4 +1,5 @@
 #include "../lib/espnow_receiver.h"
+#include <WiFi.h>
 
 #define RELAIS 6
 #define LED 8
@@ -17,6 +18,13 @@ void setup() {
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
   pinMode(RELAIS, OUTPUT);
+  Serial.print("Démarrage relai");
+  
+  WiFi.mode(WIFI_STA);   // OBLIGATOIRE
+  WiFi.disconnect();
+
+  Serial.print("Adresse MAC (STA) : ");
+  Serial.println(WiFi.macAddress());
   receiver.begin();
 }
 void loop() {

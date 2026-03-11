@@ -25,8 +25,8 @@ public:
                  info->src_addr[0], info->src_addr[1], info->src_addr[2],
                  info->src_addr[3], info->src_addr[4], info->src_addr[5]);
 
-        Serial.print("De : ");
-        Serial.println(macStr);
+        /*Serial.print("De : ");
+        Serial.println(macStr);*/
         ledFlash = true;
     }
 

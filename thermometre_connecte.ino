@@ -7,6 +7,8 @@
 #define BROCHE_DHT 10
 #define TYPE_DHT DHT22
 #define BUTTON_PIN 21
+  
+#define SEUIL_TEMP 1.0
 
 uint8_t receiverMac[] = { 0x1C, 0xDB, 0xD4, 0x3C, 0x75, 0xC8 };
 
@@ -27,6 +29,9 @@ struct Mesures {
 unsigned long lastUpdate = 0;
 const unsigned long UPDATE_INTERVAL = 500;
 
+Mesures dernierEnvoi;
+bool premiereMesure = true;
+
 bool lireCapteur(Mesures &m) {
   return monDHT.lire(m.humidite, m.temperature, m.ressenti);
 }
@@ -41,9 +46,10 @@ void allumerAffichage() {
 }
 
 void envoyerDonnees(const Mesures &m) {
+  Serial.print("Humidité = "); Serial.print( m.humidite); Serial.println(" %");
+  Serial.print("Température = "); Serial.print(m.ressenti); Serial.println(" °C");
   emitter.sendInt(m.ressenti, m.humidite);
 }
-
 void afficherMesures(const Mesures &m, bool boutonAppuye) {
   if (boutonAppuye) {
     tempDisp.showHumidity(m.humidite);
@@ -52,9 +58,15 @@ void afficherMesures(const Mesures &m, bool boutonAppuye) {
   }
 }
 
+
+
 void setup() {
   Serial.begin(115200);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+    WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(100);   // IMPORTANT
 
   emitter.begin();
   monDHT.begin();
@@ -77,6 +89,20 @@ void loop() {
   if (affichageActif && millis() - lastInteraction > DISPLAY_TIMEOUT) {
     eteindreAffichage();
   }
+  Mesures mesures;
+
+    if (!lireCapteur(mesures)) {
+    tempDisp.showError();
+    return;
+  }
+
+  delay(500);
+
+  if (premiereMesure || abs(mesures.ressenti - dernierEnvoi.ressenti) > SEUIL_TEMP) {
+      envoyerDonnees(mesures);
+      dernierEnvoi = mesures;
+      premiereMesure = false;
+  };
 
   // Si affichage éteint, on ne fait rien de plus
   if (!affichageActif) return;
@@ -85,14 +111,10 @@ void loop() {
   if (millis() - lastUpdate < UPDATE_INTERVAL) return;
   lastUpdate = millis();
 
-  Mesures mesures;
-
-  if (!lireCapteur(mesures)) {
-    tempDisp.showError();
-    return;
-  }
-
+  
   afficherMesures(mesures, boutonAppuye);
-  envoyerDonnees(mesures);
+
+  
+
 }
 
